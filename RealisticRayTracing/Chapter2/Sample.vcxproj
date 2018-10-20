@@ -118,14 +118,20 @@
     <ClInclude Include="dynarray.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="onb.h" />
+    <ClInclude Include="ray.h" />
     <ClInclude Include="rgb.h" />
     <ClInclude Include="rng.h" />
+    <ClInclude Include="shape.h" />
+    <ClInclude Include="sphere.h" />
+    <ClInclude Include="triangle.h" />
     <ClInclude Include="vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="image.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="onb.cpp" />
+    <ClCompile Include="sphere.cpp" />
+    <ClCompile Include="triangle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
