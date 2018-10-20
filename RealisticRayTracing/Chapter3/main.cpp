@@ -1,79 +1,74 @@
-﻿
-#include "image.h"
+﻿// main.cc
+
+#include <vector>
+#include <iostream>
 #include "vector3.h"
-#include "onb.h"
 #include "rgb.h"
-#include "rng.h"
-#include "dynarray.h"
-#include <cassert>
+#include "image.h"
+#include "shape.h"
+#include "triangle.h"
+#include "sphere.h"
+
 
 int main(int argc, char** argv)
 {
+    HitRecord   rec = {};
+    bool        is_hit = false;
+    float       tmax;             // max valid t parameter
+    Vector3     dir(0, 0, -1);    // direction of viewing rays
+
+    // geometry
+    std::vector<Shape*> shapes;
+    shapes.push_back(new Sphere(Vector3(250.0f, 250.0f, -1000.0f), 150, rgb(0.2f, 0.2f, 0.8f)));
+    shapes.push_back(new Triangle(
+                        Vector3(300.0f, 600.0f,  -800.0f),
+                        Vector3(  0.0f, 100.0f, -1000.0f),
+                        Vector3(450.0f,  20.0f, -1000.0f),
+                        rgb(0.8f, 0.2f, 0.2f)));
+
+    Image im(500, 500);
+
+    // loop over pixels
+    for(auto i=0; i<500; ++i)
     {
-        DynArray<int> test;
-        test.append(1);
-        test.append(2);
-        test.append(3);
-
-        assert(test.length() == 3);
-
-        for(auto i=0; i<test.length(); ++i)
+        for(auto j=0; j<500; ++j)
         {
-            printf_s("%d\n", test[i]);
+            tmax = 100000.0f;
+            is_hit = false;
+
+            Ray r(Vector3(i, j, 0), dir);
+
+            // loop over list of shapes
+            for(auto k=0u; k<shapes.size(); ++k)
+            {
+                if (shapes[k]->hit(r, 0.00001f, tmax, 0.0f, rec))
+                {
+                    tmax = rec.t;
+                    is_hit = true;
+                }
+            }
+
+            if (is_hit)
+            {
+                im.set(i, j, rec.color);
+            }
+            else
+            {
+                im.set(i, j, rgb(0.2f, 0.2f, 0.2f));
+            }
         }
-        assert(test[0] == 1);
-        assert(test[1] == 2);
-        assert(test[2] == 3);
-        //assert(test.arraySize == 4);
-
-        test.append(4);
-        test.append(5);
-
-        assert(test[3] == 4);
-        assert(test[4] == 5);
-        //assert(test.arraySize == 8);
-
-        test.truncate();
-        assert(test[0] == 1);
-        assert(test[1] == 2);
-        assert(test[2] == 3);
-        assert(test[3] == 4);
-        assert(test[4] == 5);
-        //assert(test.arraySize == 5);
-        //assert(test.nData == 5);
     }
 
+    im.writePPM("result.ppm");
+
+    for(auto i=0u; i<shapes.size(); ++i)
     {
-        Image image(512, 256, rgb(1.0f, 0.0f, 0.0f));
-        image.writePPM("test.ppm");
+        auto ptr = shapes[i];
+        delete ptr;
+        shapes[i] = nullptr;
     }
-
-    {
-        Vector3 a(0.0f, 0.0f, 0.0f);
-        Vector3 b(1.0f, 0.0f, 0.0f);
-        Vector3 c(0.0f, 1.0f, 0.0f);
-
-        auto r1 = a + b;
-        auto r2 = a - b;
-        auto r3 = b * 3.0f;
-
-        std::cout << r1 << std::endl;
-        std::cout << r2 << std::endl;
-        std::cout << r3 << std::endl;
-
-        r1 = b + c;
-        r2 = b - c;
-        r3 = c / 0.5f;
-
-        std::cout << r1 << std::endl;
-        std::cout << r2 << std::endl;
-        std::cout << r3 << std::endl;
-
-        printf_s("length a = %f\n", a.length());
-        printf_s("length b = %f\n", b.length());
-        printf_s("length c = %f\n", c.length());
-
-    }
+    shapes.clear();
+    shapes.shrink_to_fit();
 
     return 0;
 }

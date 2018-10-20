@@ -50,27 +50,7 @@ public:
     Vector3& operator -= (const Vector3& value);
     Vector3& operator *= (float value);
     Vector3& operator /= (float value);
-
-    friend bool operator == (const Vector3& lhs, const Vector3& rhs);
-    friend bool operator != (const Vector3& lhs, const Vector3& rhs);
-
-    friend std::istream& operator >> (std::istream& is, Vector3& v);
-    friend std::ostream& operator << (std::ostream& os, const Vector3& v);
-
-    friend Vector3 operator + (const Vector3& lhs, const Vector3& rhs);
-    friend Vector3 operator - (const Vector3& lhs, const Vector3& rhs);
-    friend Vector3 operator / (const Vector3& lhs, float rhs);
-    friend Vector3 operator * (const Vector3& lhs, float rhs);
-    friend Vector3 operator * (float lhs, const Vector3& rhs);
-
-    friend Vector3 unitVector(const Vector3& value);
-    friend Vector3 minVec    (const Vector3& lhs, const Vector3& rhs);
-    friend Vector3 maxVec    (const Vector3& lhs, const Vector3& rhs);
-    friend Vector3 cross     (const Vector3& lhs, const Vector3& rhs);
-    friend float   dot       (const Vector3& lhs, const Vector3& rhs);
-    friend float   tripleProduct(const Vector3& v1, const Vector3& v2, const Vector3& v3);
 };
-
 
 inline void Vector3::makeUnitVector()
 {
@@ -217,13 +197,7 @@ inline bool operator == (const Vector3& lhs, const Vector3& rhs)
 
 inline std::istream& operator >> (std::istream& is, Vector3& value)
 {
-    float x, y, z;
-    is >> x >> y >> z;
-    
-    value.e[0] = x;
-    value.e[1] = y;
-    value.e[2] = z;
-
+    is >> value.e[0] >> value.e[1] >> value.e[2];
     return is;
 }
 

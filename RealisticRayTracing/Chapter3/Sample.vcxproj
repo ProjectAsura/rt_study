@@ -121,15 +121,18 @@
     <ClInclude Include="ray.h" />
     <ClInclude Include="rgb.h" />
     <ClInclude Include="rng.h" />
+    <ClInclude Include="sample.h" />
     <ClInclude Include="shape.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="triangle.h" />
+    <ClInclude Include="vector2.h" />
     <ClInclude Include="vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="image.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="onb.cpp" />
+    <ClCompile Include="sample.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="triangle.cpp" />
   </ItemGroup>
